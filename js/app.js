@@ -5,8 +5,9 @@ let myContainer = document.querySelector('section');
 
 let myButton = document.querySelector('section + div');
 
-let image1 = document.querySelector('section img:first-child');
-let image2 = document.querySelector('section img:nth-child(2)');
+let image1 = document.querySelector('#img img:first-child');
+let image2 = document.querySelector('#img img:nth-child(2)');
+let image3 = document.querySelector('#img img:nth-child(3)');
 
 let numberOfMatchUps = 0;
 let numberOfMatchUpsAllowed = 25;
@@ -14,7 +15,7 @@ let numberOfMatchUpsAllowed = 25;
 let allProducts = [];
 
 
-function Product(name, fileExtension = 'jpg', 'png') {
+function Product(name, fileExtension = 'jpg') {
   this.name = name;
   this.src = `imgs/${name}.${fileExtension}`;
   this.views = 0;
@@ -23,30 +24,29 @@ function Product(name, fileExtension = 'jpg', 'png') {
 
 
 
-let bag = new Product('bag');
-let banana = new Product('banana');
-let bathroom = new Product('bathroom');
-let boots = new Product('boots');
-let breakfast = new Product('breakfast');
-let bubblegum = new Product('bubblegum');
-let chair = new Product('chair');
-let cthulhu = new Product('cthulhu');
-let dog-duck = new Product('dog-duck');
-let dragon = new Product('dragon');
-let pen = new Product('pen');
-let pet-sweep = new Product('pet-sweep');
-let scissors = new Product('scissors');
-let shark = new Product('shark');
-let sweep = new Product('sweep', 'png');
-let tauntaun = new Product('tauntaun');
-let unicorn = new Product('unicorn');
-let water-can = new Product('water-can');
-let wine-glass = new Product('wine-glass');
+let bag = new Product('bag', 'imgs/bag.jpg');
+let banana = new Product('banana', 'imgs/bathroom.jpg');
+let bathroom = new Product('bathroom', 'imgs/bathroom.jpg' );
+let boots = new Product('boots', 'imgs/boots.jpg');
+let breakfast = new Product('breakfast', 'imgs/breakfast.jpg');
+let bubblegum = new Product('bubblegum', 'imgs/bubblegum.jpg');
+let chair = new Product('chair', 'imgs/chair.jpg');
+let cthulhu = new Product('cthulhu', 'imgs/cthulhu.jpg');
+let dogDuck = new Product('dog-duck', 'imgs/dog-duck.jpg');
+let dragon = new Product('dragon', 'imgs/dragon.jpg');
+let pen = new Product('pen', 'imgs/pen.jpg');
+let petSweep = new Product('pet-sweep', 'imgs/pet-sweep.jpg');
+let scissors = new Product('scissors', 'imgs/scissors.jpg');
+let shark = new Product('shark', 'imgs/shark.jpg');
+let sweep = new Product('sweep', 'imgs/sweep.png');
+let tauntaun = new Product('tauntaun', 'imgs/tauntaun.jpg');
+let unicorn = new Product('unicorn', 'imgs/unicorn.jpg');
+let waterCan = new Product('water-can', 'imgs/water-can.jpg');
+let wineGlass = new Product('wine-glass', 'imgs/wine-glass.jpg');
 
+allProducts = [bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, waterCan, wineGlass];
 
-allProducts = [bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dog - duck, dragon, pen, pet - sweep, scissors, shark, sweep, tauntaun, unicorn, water - can, wine - glass];
-
-
+let rngNoAr = [];
 
 function selectRandomProduct() {
   return Math.floor(Math.random() * allProducts.length);
@@ -66,14 +66,24 @@ function renderProducts() {
 
   image1.src = allProducts[Product1].src;
   image2.src = allProducts[Product2].src;
+  image3.src = allProducts[Product2].src;
   image1.alt = allProducts[Product1].name;
   image2.alt = allProducts[Product2].name;
+  image3.src = allProducts[Product2].name;
   allProducts[Product1].views++;
+  allProducts[Product2].views++;
   allProducts[Product2].views++;
 
 
   numberOfMatchUps++;
 }
+
+renderImg();
+
+let img = document.getElementById('img');
+
+
+let resultUl = document.getElementById('resultUl');
 
 function renderResults() {
   let results = document.querySelector('ul');
