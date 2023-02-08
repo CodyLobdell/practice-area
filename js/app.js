@@ -1,32 +1,29 @@
 'use strict';
 
+// number of product votes total
 
-let myContainer = document.querySelector('section');
+let vote = 0;
+let maxVote = 25;
 
-let myButton = document.querySelector('section + div');
-
+// Render img
 let image1 = document.querySelector('#img img:first-child');
 let image2 = document.querySelector('#img img:nth-child(2)');
 let image3 = document.querySelector('#img img:nth-child(3)');
 
-let numberOfMatchUps = 0;
-let numberOfMatchUpsAllowed = 25;
-
-let allProducts = [];
-
-
-function Product(name, fileExtension = 'jpg') {
+//constructor function for product
+function Product(name, src) {
   this.name = name;
-  this.src = `imgs/${name}.${fileExtension}`;
-  this.views = 0;
-  this.likes = 0;
+  this.src = src;
+  // this.src = `img/${name}.jpg`;
+  this.view = 0;
+  this.like = 0;
 }
 
-
+//all products
 
 let bag = new Product('bag', 'imgs/bag.jpg');
-let banana = new Product('banana', 'imgs/bathroom.jpg');
-let bathroom = new Product('bathroom', 'imgs/bathroom.jpg' );
+let banana = new Product('banana', 'imgs/banana.jpg');
+let bathroom = new Product('bathroom', 'imgs/bathroom.jpg');
 let boots = new Product('boots', 'imgs/boots.jpg');
 let breakfast = new Product('breakfast', 'imgs/breakfast.jpg');
 let bubblegum = new Product('bubblegum', 'imgs/bubblegum.jpg');
@@ -44,79 +41,77 @@ let unicorn = new Product('unicorn', 'imgs/unicorn.jpg');
 let waterCan = new Product('water-can', 'imgs/water-can.jpg');
 let wineGlass = new Product('wine-glass', 'imgs/wine-glass.jpg');
 
-allProducts = [bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, waterCan, wineGlass];
+// all product listed in an array
+let list = [bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, waterCan, wineGlass];
 
-let rngNoAr = [];
-
-function selectRandomProduct() {
-  return Math.floor(Math.random() * allProducts.length);
+//Random image function
+function rng() {
+  return Math.floor(Math.random() * list.length);
 }
 
-function renderProducts() {
-  let Product1 = selectRandomProduct();
-  let Product2 = selectRandomProduct();
-  let Product3 = selectRandomProduct();
-  console.log(Product1, Product2);
+function renderImg() {
 
-  while (Product1 === Product2) {
-    Product2 = selectRandomProduct();
-    console.log(Product1, Product2);
+  let img1 = rng();
+  let img2 = rng();
+  let img3 = rng();
+  console.log(img1, img2, img3);
+  while (img1 === img2 || img1 === img3 || img2 === img3) {
+    img2 = rng();
+    img3 = rng();
   }
-
-
-  image1.src = allProducts[Product1].src;
-  image2.src = allProducts[Product2].src;
-  image3.src = allProducts[Product2].src;
-  image1.alt = allProducts[Product1].name;
-  image2.alt = allProducts[Product2].name;
-  image3.src = allProducts[Product2].name;
-  allProducts[Product1].views++;
-  allProducts[Product2].views++;
-  allProducts[Product2].views++;
-
-
-  numberOfMatchUps++;
+  //cycle through images for next pick
+  image1.src = list[img1].src;
+  image2.src = list[img2].src;
+  image3.src = list[img3].src;
+  image1.alt = list[img1].name;
+  image2.alt = list[img2].name;
+  image3.alt = list[img3].name;
+  list[img1].view++;
+  list[img2].view++;
+  list[img3].view++;
 }
 
 renderImg();
+// add event listener
 
 let img = document.getElementById('img');
 
 
 let resultUl = document.getElementById('resultUl');
 
-function renderResults() {
-  let results = document.querySelector('ul');
-  for (let i = 0; i < allProducts.length; i++) {
-    let li = document.createElement('li');
-    li.textContent = `${allProducts[i].name} had ${allProducts[i].views} views and ${allProducts[i].likes} likes.`;
-    results.appendChild(li);
-  }
-}
-
-
-function handleProductClick(event) {
-
-  console.log(event.target.alt);
-  let clickedProduct = event.target.alt;
-
-  for (let i = 0; i < allProducts.length; i++) {
-    if (allProducts[i].name === clickedProduct) {
-
-      allProducts[i].likes++;
+let mouseClick = function (event) {
+  // console.log(event.target.alt);
+  let clickName = event.target.alt;
+  for (let i = 0; i < list.length; i++) {
+    if (clickName === list[i].name) {
+      list[i].like++;
+      vote++;
+      console.log(list[i].like);
     }
   }
-
-  if (numberOfMatchUps < numberOfMatchUpsAllowed) {
-    renderProducts();
+  if (vote < maxVote) {
+    renderImg();
   } else {
-    myContainer.removeEventListener('click', handleProductClick);
-    myButton.addEventListener('click', renderResults);
+    img.removeEventListener('click', mouseClick);
+    alert("Click 'View Results' on the left for totals.")
+    // render();
+    viewResult.addEventListener('click', render);
+    renderImg();
   }
+
+};
+
+img.addEventListener('click', mouseClick);
+
+// render result
+let render = function () {
+  for (let j = 0; j < list.length; j++) {
+    let newList = document.createElement('li');
+    newList.textContent = `${list[j].name} has ${list[j].like} votes, and was seen ${list[j].view} times.`;
+    
+    resultUl.appendChild(newList);
+  }
+  viewResult.removeEventListener('click', render);
 }
 
-
-renderProducts();
-
-
-myContainer.addEventListener('click', handleProductClick)
+let viewResult = document.getElementById('view');
